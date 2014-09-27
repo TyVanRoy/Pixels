@@ -15,7 +15,7 @@ public abstract class GravityBoundSprite extends BehavioralSprite {
 
 	// Checks sor bottom contact and also makes last minute adjustments to the
 	// position of needed
-	protected synchronized boolean checkForBottomContact() {
+	protected synchronized boolean checkForBottomContact() {		
 		int dif = weight;
 		
 		Color[][] map = game.getMap();
@@ -23,9 +23,11 @@ public abstract class GravityBoundSprite extends BehavioralSprite {
 			for (int x = 0; x < shape[0].length; x++) {
 				if (shape[y][x] != null) {
 					if (y == shape.length - 1 || shape[y + 1][x] == null) {
-						for (int w = 1; w < weight; w++) {
-							if (map[this.y + y + w][this.x + x] != null) {
-								dif = w < dif ? w : dif;
+						for(int i = 1; i < weight; i++){
+							if(map[this.y + y + i][this.x + x] != null){
+								if(i < dif){
+									dif = i;
+								}
 							}
 						}
 					}
@@ -34,12 +36,12 @@ public abstract class GravityBoundSprite extends BehavioralSprite {
 		}
 		
 		if(dif < weight){
-			System.out.println(dif);
-			this.y += dif;
+			if(dif > 1){
+				y += dif - 1;
+			}
 			return true;
-		}else{
-			return false;
 		}
+		return false;
 	}
 	@Override
 	public void behave() {
