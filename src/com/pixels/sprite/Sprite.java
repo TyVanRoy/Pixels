@@ -29,10 +29,6 @@ public abstract class Sprite {
 		return shape;
 	}
 	
-	protected boolean checkForBottomContact(){
-		
-	}
-	
 	public void setColor(Color color){
 		for(int y = 0; y < shape.length; y++){
 			for(int x = 0; x < shape[0].length; x++){

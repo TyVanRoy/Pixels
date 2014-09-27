@@ -4,16 +4,37 @@ import java.awt.Color;
 
 import com.pixels.master.Game;
 
-public abstract class GravityBoundSprite extends BehavioralSprite{
-	private int weight;
+public abstract class GravityBoundSprite extends BehavioralSprite {
+	protected int weight;
 
-	protected GravityBoundSprite(Game game, int x, int y, Color[][] shape, int weight){
+	protected GravityBoundSprite(Game game, int x, int y, Color[][] shape,
+			int weight) {
 		super(game, x, y, shape);
 		this.weight = weight;
 	}
-	
+
+	// Checks sor bottom contact and also makes last minute adjustments to the
+	// position of needed
+	protected synchronized boolean checkForBottomContact() {
+		Color[][] map = game.getMap();
+		for (int y = 0; y < shape.length; y++) {
+			for (int x = 0; x < shape[0].length; x++) {
+				if (shape[y][x] != null) {
+					if (y == shape.length - 1 || shape[y + 1][x] == null) {
+						if (map[this.y + y + 1][this.x + x] != null) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
 	@Override
-	public void behave(){
-		y += weight;
+	public void behave() {
+		if (!checkForBottomContact())
+			if (!this.equals(game.getRegisteredSprite()))
+				y += weight;
 	}
 }

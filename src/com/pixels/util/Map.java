@@ -25,7 +25,7 @@ public abstract class Map {
 		Random r = new Random();
 		double heightMagnitude = .1;
 		int baseMax = (int) (height * heightMagnitude);
-		int baseMin = (int) (height * (heightMagnitude * .2));
+		int baseMin = (int) (height * (heightMagnitude * .1));
 
 		for (int x = 0; x < width; x++) {
 

@@ -11,7 +11,7 @@ public class Player extends GravityBoundSprite {
 	public static final Color COLOR = Color.green;
 	public static final int DIAMETER = 11;
 	public static final int MOVEMENT_DISTANCE = 1;
-	public static final int WEIGHT = 5;
+	public static final int WEIGHT = 1;
 
 	public Player(Game game) {
 		super(game, (int) (Game.LEFT_FOCUS_FACTOR * Game.DENSITY + game
