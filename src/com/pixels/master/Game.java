@@ -22,7 +22,7 @@ import com.pixels.util.Map;
 public class Game implements Runnable {
 	public static final String WINDOW_TITLE = "•Pixels•";
 	public static final double ASPECT_RATIO = 2;
-	public static final double DENSITY = ASPECT_RATIO * 120;
+	public static final double DENSITY = ASPECT_RATIO * 300;
 	public static final double LEFT_FOCUS_FACTOR = .2;
 	public static final int SCREEN_MARGIN = 50;
 	public static final int MAP_SIZE = 2000;

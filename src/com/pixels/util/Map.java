@@ -23,7 +23,7 @@ public abstract class Map {
 
 	private static void generateDefaultMap(Color[][] map, int width, int height) {
 		Random r = new Random();
-		double heightMagnitude = .1;
+		double heightMagnitude = .2;
 		int baseMax = (int) (height * heightMagnitude);
 		int baseMin = (int) (height * (heightMagnitude * .1));
 
