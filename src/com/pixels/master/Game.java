@@ -11,12 +11,13 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 
 import com.pixels.player.Player;
-import com.pixels.player.StatusBar;
 import com.pixels.sprite.BehavioralSprite;
 import com.pixels.sprite.Sprite;
 import com.pixels.sprite.SpriteContainer;
 import com.pixels.ui.ContentFrame;
 import com.pixels.ui.InputListener;
+import com.pixels.ui.StatusBar;
+import com.pixels.util.DataExtract;
 import com.pixels.util.Map;
 
 public class Game implements Runnable {
@@ -188,7 +189,7 @@ public class Game implements Runnable {
 		// Starts the main game thread
 		new Thread(this).start();
 		window.setVisible(true);
-
+		
 		// Initializes content graphics
 		content.initGraphics();
 	}
@@ -391,6 +392,7 @@ public class Game implements Runnable {
 
 			// Getting the input status
 			boolean[] status = input.getStatus();
+			statusBar.setLocked(status[4]);
 			// Sending the input to the player. Sprites at 0 will always be the
 			// player.
 			Player player = (Player) sprites.get(0);

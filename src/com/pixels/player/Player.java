@@ -4,14 +4,13 @@ import java.awt.Color;
 
 import com.pixels.master.Game;
 import com.pixels.sprite.GravityBoundSprite;
-import com.pixels.sprite.Sprite;
 import com.pixels.util.Shape;
 
 public class Player extends GravityBoundSprite {
 	public static final Color COLOR = Color.green;
 	public static final int DIAMETER = 11;
 	public static final int MOVEMENT_DISTANCE = 1;
-	public static final int WEIGHT = 5;
+	public static final int WEIGHT = 2;
 
 	public Player(Game game) {
 		super(game, (int) (Game.LEFT_FOCUS_FACTOR * Game.DENSITY + game

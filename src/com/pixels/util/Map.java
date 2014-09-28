@@ -3,8 +3,6 @@ package com.pixels.util;
 import java.awt.Color;
 import java.util.Random;
 
-import com.pixels.master.Game;
-
 public abstract class Map {
 	public static final int DEFAULT_MAP = 0;
 
