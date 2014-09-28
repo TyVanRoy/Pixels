@@ -17,7 +17,6 @@ import com.pixels.sprite.SpriteContainer;
 import com.pixels.ui.ContentFrame;
 import com.pixels.ui.InputListener;
 import com.pixels.ui.StatusBar;
-import com.pixels.util.DataExtract;
 import com.pixels.util.Map;
 
 public class Game implements Runnable {
@@ -27,6 +26,8 @@ public class Game implements Runnable {
 	public static final double LEFT_FOCUS_FACTOR = .2;
 	public static final int SCREEN_MARGIN = 50;
 	public static final int MAP_SIZE = 2000;
+	public static final int STATUS_BAR_MARGIN_UP = 2;
+	public static final int STATUS_BAR_MARGIN_LEFT = 5;
 	// In milliseconds
 	public static final int UPDATE_RATE = 120;
 	public static final int SHIFT_SPEED = 50;
@@ -269,7 +270,7 @@ public class Game implements Runnable {
 		Color[][] statusPixels = statusBar.getPixels();
 		for (int y = 0; y < statusPixels.length; y++) {
 			for (int x = 0; x < statusPixels[0].length; x++) {
-				visiblePixels[y][x] = statusPixels[y][x];
+				visiblePixels[y + STATUS_BAR_MARGIN_UP][x + STATUS_BAR_MARGIN_LEFT] = statusPixels[y][x];
 			}
 		}
 		
