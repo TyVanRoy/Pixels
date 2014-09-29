@@ -390,6 +390,8 @@ public class Game implements Runnable {
 			// Making sure the content is able to take input
 			if (!content.hasFocus())
 				content.requestFocus();
+			
+			induceSpriteBehavior();
 
 			// Getting the input status
 			boolean[] status = input.getStatus();
@@ -399,8 +401,6 @@ public class Game implements Runnable {
 			Player player = (Player) sprites.get(0);
 			player.dispatchInstructions(status);
 			
-			induceSpriteBehavior();
-
 			calculateScrolling(player, status);
 
 			// Calculating the positions and graphics

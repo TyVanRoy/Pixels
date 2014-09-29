@@ -1,8 +1,15 @@
-package com.pixels.util;
+package com.pixels.master;
 
 import java.awt.Color;
 
-public abstract class Shape {
+import com.pixels.util.DataExtract;
+
+public class PixelMap {
+	private Color[][] pixels;
+	
+	public PixelMap(int width, int height){
+		
+	}
 	
 	// Diameter should be odd
 	public static Color[][] generateBall(Color color, int diameter) {
@@ -23,6 +30,10 @@ public abstract class Shape {
 		}
 		
 		return shape;
+	}
+	
+	public static Color[][] getPlayerShape(){
+		return DataExtract.getImagePixels("player.png", DataExtract.PLAYER);
 	}
 	
 }
