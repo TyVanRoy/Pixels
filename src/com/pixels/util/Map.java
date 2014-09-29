@@ -3,12 +3,13 @@ package com.pixels.util;
 import java.awt.Color;
 import java.util.Random;
 
+import com.pixels.master.PixelMap;
+
 public abstract class Map {
 	public static final int DEFAULT_MAP = 0;
 
-	public static Color[][] generateMap(int width, int height,
-			final int MAP_TYPE) {
-		Color[][] map = new Color[height][width];
+	public static PixelMap generateMap(int width, int height, final int MAP_TYPE) {
+		PixelMap map = new PixelMap(width, height);
 
 		switch (MAP_TYPE) {
 		case DEFAULT_MAP:
@@ -19,7 +20,7 @@ public abstract class Map {
 		return map;
 	}
 
-	private static void generateDefaultMap(Color[][] map, int width, int height) {
+	private static void generateDefaultMap(PixelMap map, int width, int height) {
 		Random r = new Random();
 		double heightMagnitude = .2;
 		int baseMax = (int) (height * heightMagnitude);
@@ -29,23 +30,28 @@ public abstract class Map {
 
 			if (x < baseMin) {
 				for (int y = 0; y < height; y++) {
-					map[y][x] = new Color(r.nextInt(256), r.nextInt(256),
-							r.nextInt(256));
+					map.put(x,
+							y,
+							new Color(r.nextInt(256), r.nextInt(256), r
+									.nextInt(256)));
 					for (int nX = 0; nX < r.nextInt(baseMax); nX++) {
-						map[y][nX] = new Color(r.nextInt(256), r.nextInt(256),
-								r.nextInt(256));
+						map.put(nX, y, new Color(r.nextInt(256),
+								r.nextInt(256), r.nextInt(256)));
 					}
 				}
 			}
 			for (int y = 0; y < r.nextInt(baseMax); y++) {
-				map[height - y - 1][x] = new Color(r.nextInt(256),
-						r.nextInt(256), r.nextInt(256));
+				map.put(x,
+						height - y - 1,
+						new Color(r.nextInt(256), r.nextInt(256), r
+								.nextInt(256)));
 			}
 			for (int y = 0; y < baseMin; y++) {
-				map[height - y - 1][x] = new Color(r.nextInt(256),
-						r.nextInt(256), r.nextInt(256));
+				map.put(x,
+						height - y - 1,
+						new Color(r.nextInt(256), r.nextInt(256), r
+								.nextInt(256)));
 			}
 		}
 	}
-
 }

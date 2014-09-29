@@ -1,13 +1,12 @@
 package com.pixels.sprite;
 
-import java.awt.Color;
-
 import com.pixels.master.Game;
+import com.pixels.master.PixelMap;
 
 public abstract class GravityBoundSprite extends BehavioralSprite {
 	protected int weight;
 
-	protected GravityBoundSprite(Game game, int x, int y, Color[][] shape,
+	protected GravityBoundSprite(Game game, int x, int y, PixelMap shape,
 			int weight) {
 		super(game, x, y, shape);
 		this.weight = weight;
@@ -18,13 +17,13 @@ public abstract class GravityBoundSprite extends BehavioralSprite {
 	protected synchronized boolean checkForBottomContact() {		
 		int dif = weight;
 		
-		Color[][] map = game.getMap();
-		for (int y = 0; y < shape.length; y++) {
-			for (int x = 0; x < shape[0].length; x++) {
-				if (shape[y][x] != null) {
-					if (y == shape.length - 1 || shape[y + 1][x] == null) {
+		PixelMap map = game.getMap();
+		for (int y = 0; y < shape.height(); y++) {
+			for (int x = 0; x < shape.width(); x++) {
+				if (shape.get(x, y) != null) {
+					if (y == shape.height() - 1 || shape.get(x, y + 1) == null) {
 						for(int i = 1; i < weight; i++){
-							if(map[this.y + y + i][this.x + x] != null){
+							if(map.get(this.x + x, this.y + y + i) != null){
 								if(i < dif){
 									dif = i;
 								}

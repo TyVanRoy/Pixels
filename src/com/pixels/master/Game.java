@@ -39,9 +39,7 @@ public class Game implements Runnable {
 	private ContentFrame content;
 	private int width, height;
 	private boolean running = false;
-	private Color[][] baseMap;
-	private Color[][] map;
-	private Color[][] visiblePixels;
+	private PixelMap baseMap, map, visiblePixels;
 	private ArrayList<Sprite> sprites = new ArrayList<Sprite>();
 	private InputListener input;
 	private SpriteContainer registeredSpriteContainer;
@@ -111,8 +109,8 @@ public class Game implements Runnable {
 		// Registers the pointed clicked by the user
 		if (point != null) {
 			// Going through the entire map
-			for (int y = 0; y < map.length; y++) {
-				for (int x = 0; x < map[0].length; x++) {
+			for (int y = 0; y < map.height(); y++) {
+				for (int x = 0; x < map.width(); x++) {
 
 					// Checking sprites to see if any starting points lie on the
 					// current coordinate
@@ -120,10 +118,12 @@ public class Game implements Runnable {
 						if (sprite.getX() == x && sprite.getY() == y) {
 
 							// Now checking the sprite's shape for matches
-							Color[][] shape = sprite.shape();
-							for (int shapeY = 0; shapeY < sprite.shape().length; shapeY++) {
-								for (int shapeX = 0; shapeX < sprite.shape()[0].length; shapeX++) {
-									if (shape[shapeY][shapeX] != null) {
+							PixelMap shape = sprite.shape();
+							for (int shapeY = 0; shapeY < sprite.shape()
+									.height(); shapeY++) {
+								for (int shapeX = 0; shapeX < sprite.shape()
+										.width(); shapeX++) {
+									if (shape.get(shapeX, shapeY) != null) {
 										if (x + shapeX == point.x
 												&& y + shapeY == point.y) {
 											registerSprite(sprite, point);
@@ -190,7 +190,7 @@ public class Game implements Runnable {
 		// Starts the main game thread
 		new Thread(this).start();
 		window.setVisible(true);
-		
+
 		// Initializes content graphics
 		content.initGraphics();
 	}
@@ -212,18 +212,14 @@ public class Game implements Runnable {
 		}
 
 		// Creating a new map from scratch
-		map = new Color[baseMap.length][baseMap[0].length];
+		map = new PixelMap(baseMap.width(), baseMap.height());
 
 		// Copying the basemap onto the new map
-		for (int y = 0; y < map.length; y++) {
-			for (int x = 0; x < map[0].length; x++) {
-				map[y][x] = baseMap[y][x];
-			}
-		}
+		baseMap.translate(map, 0, 0, 0, 0);
 
 		// Iterating through the map
-		for (int y = 0; y < map.length; y++) {
-			for (int x = 0; x < map[0].length; x++) {
+		for (int y = 0; y < map.height(); y++) {
+			for (int x = 0; x < map.width(); x++) {
 
 				// Checking to see if the starting points of any of the sprites
 				// lies on this point
@@ -231,9 +227,9 @@ public class Game implements Runnable {
 					if (sprite.getX() == x && sprite.getY() == y) {
 
 						// Drawing out the sprite's shape
-						Color[][] shape = sprite.shape();
-						for (int shapeY = 0; shapeY < shape.length; shapeY++) {
-							for (int shapeX = 0; shapeX < shape[0].length; shapeX++) {
+						PixelMap shape = sprite.shape();
+						for (int shapeY = 0; shapeY < shape.height(); shapeY++) {
+							for (int shapeX = 0; shapeX < shape.width(); shapeX++) {
 								// Adjusted coordinates
 								int aX = x + shapeX;
 								int aY = y + shapeY;
@@ -242,8 +238,8 @@ public class Game implements Runnable {
 								// in bounds
 								if ((aX > -1 && aX < MAP_SIZE)
 										&& (aY > -1 && aY < (int) (DENSITY / ASPECT_RATIO))) {
-									if (shape[shapeY][shapeX] != null) {
-										map[y + shapeY][x + shapeX] = shape[shapeY][shapeX];
+									if (shape.get(shapeX, shapeY) != null) {
+										map.put(x + shapeX, y + shapeY, shape.get(shapeX, shapeY));
 									}
 								}
 							}
@@ -257,31 +253,24 @@ public class Game implements Runnable {
 	// Calculates the pixels which will appear on the screen
 	private synchronized void calculateVisiblePixels() {
 		// Reseting the array to eliminate overlay
-		visiblePixels = new Color[(int) (DENSITY / ASPECT_RATIO)][(int) DENSITY];
+		visiblePixels = new PixelMap((int) DENSITY, (int) (DENSITY / ASPECT_RATIO));
 
 		// Translating the map data into the visible data array using the map
 		// cursor
-		for (int y = 0; y < visiblePixels.length; y++) {
-			for (int x = 0; x < visiblePixels[0].length; x++) {
-				visiblePixels[y][x] = map[y][x + mapCursor];
-			}
-		}
-		
-		Color[][] statusPixels = statusBar.getPixels();
-		for (int y = 0; y < statusPixels.length; y++) {
-			for (int x = 0; x < statusPixels[0].length; x++) {
-				visiblePixels[y + STATUS_BAR_MARGIN_UP][x + STATUS_BAR_MARGIN_LEFT] = statusPixels[y][x];
-			}
-		}
-		
+		map.translate(visiblePixels, mapCursor, 0, 0, 0);
+
+		// Translating the statusbar onto the map
+		PixelMap statusPixels = statusBar.getPixels();
+		statusPixels.translate(visiblePixels, 0, 0, STATUS_BAR_MARGIN_LEFT, STATUS_BAR_MARGIN_UP);
+
 	}
 
 	// Calculates the amount of iterations needed to center the map on the
 	// player.
 	public synchronized void center() {
 		int startPosition = sprites.get(0).getX() - mapCursor;
-		int endPosition = visiblePixels[0].length / 2
-				- sprites.get(0).shape()[0].length / 2;
+		int endPosition = visiblePixels.width() / 2
+				- sprites.get(0).shape().width() / 2;
 		focusTimer = endPosition - startPosition;
 
 		if (mapCursor - focusTimer < 0) {
@@ -293,8 +282,8 @@ public class Game implements Runnable {
 
 	public synchronized void shiftLeft() {
 		int startPosition = sprites.get(0).getX() - mapCursor;
-		int endPosition = (int) (visiblePixels[0].length * LEFT_FOCUS_FACTOR)
-				- sprites.get(0).shape()[0].length / 2;
+		int endPosition = (int) (visiblePixels.width() * LEFT_FOCUS_FACTOR)
+				- sprites.get(0).shape().height() / 2;
 		focusTimer = endPosition - startPosition;
 
 		if (mapCursor - focusTimer < 0) {
@@ -304,11 +293,11 @@ public class Game implements Runnable {
 		focusTimer /= 1000 / SHIFT_SPEED;
 	}
 
-	public synchronized Color[][] getVisiblePixels() {
+	public synchronized PixelMap getVisiblePixels() {
 		return visiblePixels;
 	}
 
-	public synchronized Color[][] getMap() {
+	public synchronized PixelMap getMap() {
 		return map;
 	}
 
@@ -364,20 +353,21 @@ public class Game implements Runnable {
 					mapCursor -= Player.MOVEMENT_DISTANCE;
 			}
 			if (instructions[3]) {
-				if (mapCursor < map[0].length)
+				if (mapCursor < map.width())
 					mapCursor += Player.MOVEMENT_DISTANCE;
 			}
 		}
 	}
-	
-	public Sprite getRegisteredSprite(){
-		return registeredSpriteContainer == null ? null : registeredSpriteContainer.getSprite();
+
+	public Sprite getRegisteredSprite() {
+		return registeredSpriteContainer == null ? null
+				: registeredSpriteContainer.getSprite();
 	}
-	
-	public void induceSpriteBehavior(){
-		for(Sprite sprite : sprites){
-			if(sprite instanceof BehavioralSprite){
-				((BehavioralSprite)sprite).behave();
+
+	public void induceSpriteBehavior() {
+		for (Sprite sprite : sprites) {
+			if (sprite instanceof BehavioralSprite) {
+				((BehavioralSprite) sprite).behave();
 			}
 		}
 	}
@@ -390,7 +380,7 @@ public class Game implements Runnable {
 			// Making sure the content is able to take input
 			if (!content.hasFocus())
 				content.requestFocus();
-			
+
 			induceSpriteBehavior();
 
 			// Getting the input status
@@ -400,7 +390,7 @@ public class Game implements Runnable {
 			// player.
 			Player player = (Player) sprites.get(0);
 			player.dispatchInstructions(status);
-			
+
 			calculateScrolling(player, status);
 
 			// Calculating the positions and graphics

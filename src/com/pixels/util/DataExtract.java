@@ -6,6 +6,8 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
+import com.pixels.master.PixelMap;
+
 public abstract class DataExtract {
 	private static final String S = System.getProperty("os.name").equals(
 			"Mac OS X") ? "//" : "\\";
@@ -16,9 +18,9 @@ public abstract class DataExtract {
 	public static final String PLAYER = "player";
 
 	// I need to find a better way to do this...
-	public static Color[][] getImagePixels(String imageName,
+	public static PixelMap getImagePixels(String imageName,
 			final String DIRECTORY) {
-		Color[][] pixels = null;
+		PixelMap pixels = null;
 		try {
 			File file;
 			switch (DIRECTORY) {
@@ -37,13 +39,13 @@ public abstract class DataExtract {
 
 			BufferedImage image = ImageIO.read(file);
 
-			pixels = new Color[image.getHeight()][image.getWidth()];
-			for (int y = 0; y < pixels.length; y++) {
-				for (int x = 0; x < pixels[0].length; x++) {
+			pixels = new PixelMap(image.getWidth(), image.getHeight());
+			for (int y = 0; y < pixels.height(); y++) {
+				for (int x = 0; x < pixels.width(); x++) {
 					int value = image.getRGB(x, y);
 
 					if (value != 0)
-						pixels[y][x] = new Color(value);
+						pixels.put(x, y, new Color(value));
 				}
 			}
 		} catch (Exception e) {

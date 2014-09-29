@@ -3,8 +3,8 @@ package com.pixels.player;
 import java.awt.Color;
 
 import com.pixels.master.Game;
+import com.pixels.master.PixelMap;
 import com.pixels.sprite.GravityBoundSprite;
-import com.pixels.util.Shape;
 
 public class Player extends GravityBoundSprite {
 	public static final Color COLOR = Color.green;
@@ -13,19 +13,19 @@ public class Player extends GravityBoundSprite {
 
 	public Player(Game game) {
 		super(game, (int) (Game.LEFT_FOCUS_FACTOR * Game.DENSITY + game
-				.getMapCursor()), 50, Shape.getPlayerShape(), WEIGHT);
+				.getMapCursor()), 50, PixelMap.getPlayerShape(), WEIGHT);
 	}
 
 	public void dispatchInstructions(boolean[] instructions) {
-		int width = shape[0].length;
-		int height = shape.length;
+		int width = shape.width();
+		int height = shape.height();
 		
 		if (instructions[0]) {
 			if (y > 0)
 				y -= MOVEMENT_DISTANCE;
 		}
 		if (instructions[1]) {
-			if (y < game.getMap().length - height)
+			if (y < game.getMap().height() - height)
 				y += MOVEMENT_DISTANCE;
 		}
 		if (instructions[2]) {
@@ -33,7 +33,7 @@ public class Player extends GravityBoundSprite {
 				x -= MOVEMENT_DISTANCE;
 		}
 		if (instructions[3]) {
-			if (x < game.getMap()[0].length - width)
+			if (x < game.getMap().width() - width)
 				x += MOVEMENT_DISTANCE;
 		}
 	}
@@ -45,7 +45,7 @@ public class Player extends GravityBoundSprite {
 
 	@Override
 	public void revert() {
-		setShape(Shape.getPlayerShape());
+		setShape(PixelMap.getPlayerShape());
 	}
 
 }

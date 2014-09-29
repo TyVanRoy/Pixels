@@ -9,6 +9,7 @@ import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 
 import com.pixels.master.Game;
+import com.pixels.master.PixelMap;
 
 public class ContentFrame extends Canvas implements Runnable {
 	private static final long serialVersionUID = -8944654323818652165L;
@@ -19,7 +20,7 @@ public class ContentFrame extends Canvas implements Runnable {
 	private Color outlineColor = Color.green;
 	private int width, height;
 	private boolean rendering = false;
-	private Color[][] pixels;
+	private PixelMap pixels;
 	private boolean showingOutline = false;
 
 	public ContentFrame(Game game) {
@@ -61,23 +62,23 @@ public class ContentFrame extends Canvas implements Runnable {
 		pixels = game.getVisiblePixels();
 
 		// Rendering pixels
-		for (int y = 0; y < pixels.length; y++) {
-			for (int x = 0; x < pixels[0].length; x++) {
-				int px = x * (width / pixels[0].length);
-				int py = y * (height / pixels.length);
+		for (int y = 0; y < pixels.height(); y++) {
+			for (int x = 0; x < pixels.width(); x++) {
+				int px = x * (width / pixels.width());
+				int py = y * (height / pixels.height());
 
-				if (pixels[y][x] == null) {
+				if (pixels.get(x, y) == null) {
 					
 					// Rendering the outline of the pixels
 					if (showingOutline) {
 						g.setColor(outlineColor);
-						g.drawRect(px, py, width / pixels[0].length, height
-								/ pixels.length);
+						g.drawRect(px, py, width / pixels.width(), height
+								/ pixels.height());
 					}
 				} else {
-					g.setColor(pixels[y][x]);
-					g.fillRect(px, py, width / pixels[0].length, height
-							/ pixels.length);
+					g.setColor(pixels.get(x, y));
+					g.fillRect(px, py, width / pixels.width(), height
+							/ pixels.height());
 				}
 			}
 		}

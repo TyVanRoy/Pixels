@@ -123,8 +123,8 @@ public class InputListener implements KeyListener, MouseListener, MouseMotionLis
 	public static Point getScaledPoint(Game game, MouseEvent e){
 		int aWidth = (int) game.getDimensions().getWidth();
 		int aHeight = (int) game.getDimensions().getHeight();
-		int pWidth = game.getVisiblePixels()[0].length;
-		int pHeight = game.getVisiblePixels().length;
+		int pWidth = game.getVisiblePixels().width();
+		int pHeight = game.getVisiblePixels().height();
 		int x = (e.getX() / (aWidth / pWidth)) + game.getMapCursor();
 		int y = e.getY() / (aHeight / pHeight);
 		

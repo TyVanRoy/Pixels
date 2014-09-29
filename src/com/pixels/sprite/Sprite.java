@@ -4,13 +4,14 @@ import java.awt.Color;
 import java.awt.Point;
 
 import com.pixels.master.Game;
+import com.pixels.master.PixelMap;
 
 public abstract class Sprite {
 	protected Game game;
 	protected int x, y;
-	protected Color[][] shape;
+	protected PixelMap shape;
 
-	protected Sprite(Game game, int x, int y, Color[][] shape){
+	protected Sprite(Game game, int x, int y, PixelMap shape){
 		this.game = game;
 		this.x = x;
 		this.y = y;
@@ -25,31 +26,25 @@ public abstract class Sprite {
 		return y;
 	}
 	
-	public Color[][] shape(){
+	public PixelMap shape(){
 		return shape;
 	}
 	
 	public void setColor(Color color){
-		for(int y = 0; y < shape.length; y++){
-			for(int x = 0; x < shape[0].length; x++){
-				if(shape[y][x] != null){
-					shape[y][x] = color;
-				}
-			}
-		}
+		shape.fill(color);
 	}
 	
 	public void setLocation(Point point){
 		// Validates the coordinates first
-		if(point.x > -1 && point.x <= game.getMap()[0].length - shape[0].length){
+		if(point.x > -1 && point.x <= game.getMap().width() - shape.width()){
 			x = point.x;
 		}
-		if(point.y > -1 && point.y <= game.getMap().length - shape.length){
+		if(point.y > -1 && point.y <= game.getMap().height() - shape.height()){
 			y = point.y;
 		}
 	}
 	
-	public void setShape(Color[][] newShape){
+	public void setShape(PixelMap newShape){
 		shape = newShape;
 	}
 	
