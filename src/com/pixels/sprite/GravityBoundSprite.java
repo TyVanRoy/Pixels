@@ -14,7 +14,7 @@ public abstract class GravityBoundSprite extends BehavioralSprite {
 
 	// Checks sor bottom contact and also makes last minute adjustments to the
 	// position of needed
-	protected synchronized boolean checkForBottomContact() {		
+	protected boolean isGrounded() {		
 		int dif = weight;
 		
 		PixelMap map = game.getMap();
@@ -44,7 +44,7 @@ public abstract class GravityBoundSprite extends BehavioralSprite {
 	}
 	@Override
 	public void behave() {
-		if (!checkForBottomContact())
+		if (!isGrounded())
 			if (!this.equals(game.getRegisteredSprite()))
 				y += weight;
 	}

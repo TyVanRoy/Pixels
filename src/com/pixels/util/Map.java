@@ -13,6 +13,7 @@ public abstract class Map {
 
 		switch (MAP_TYPE) {
 		case DEFAULT_MAP:
+			map = DataExtract.getImagePixels("basemap.png", DataExtract.MAPS);
 			generateDefaultMap(map, width, height);
 			break;
 		}

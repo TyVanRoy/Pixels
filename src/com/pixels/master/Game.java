@@ -17,6 +17,7 @@ import com.pixels.sprite.SpriteContainer;
 import com.pixels.ui.ContentFrame;
 import com.pixels.ui.InputListener;
 import com.pixels.ui.StatusBar;
+import com.pixels.util.Log;
 import com.pixels.util.Map;
 
 public class Game implements Runnable {
@@ -25,7 +26,7 @@ public class Game implements Runnable {
 	public static final double DENSITY = ASPECT_RATIO * 300;
 	public static final double LEFT_FOCUS_FACTOR = .2;
 	public static final int SCREEN_MARGIN = 50;
-	public static final int MAP_SIZE = 2000;
+	public static final int MAP_SIZE = 1000;
 	public static final int STATUS_BAR_MARGIN_UP = 2;
 	public static final int STATUS_BAR_MARGIN_LEFT = 5;
 	// In milliseconds
@@ -181,18 +182,26 @@ public class Game implements Runnable {
 
 	// Initiation method
 	public void launch() {
+		Log.log("Initializing launch sequence...");
+
 		statusBar = new StatusBar(false);
 
+		Log.log("Creating sprites...");
 		createSprites();
+		Log.log("Running initial map calculations...");
 		calculateMap();
+		Log.log("Calculating visible pixels...");
 		calculateVisiblePixels();
 
 		// Starts the main game thread
+		Log.log("Starting the main game thread...");
 		new Thread(this).start();
 		window.setVisible(true);
 
 		// Initializes content graphics
 		content.initGraphics();
+
+		Log.log("Launching game...");
 	}
 
 	private void createSprites() {
@@ -207,8 +216,12 @@ public class Game implements Runnable {
 	private void calculateMap() {
 		// Initialization of the basemap
 		if (baseMap == null) {
+			Log.log("Building the base map...");
 			baseMap = Map.generateMap(MAP_SIZE, (int) (DENSITY / ASPECT_RATIO),
 					Map.DEFAULT_MAP);
+			Log.log(String.format(
+					"Base map constructed with dimension(%d, %d)",
+					baseMap.width(), baseMap.height()));
 		}
 
 		// Creating a new map from scratch
@@ -239,7 +252,8 @@ public class Game implements Runnable {
 								if ((aX > -1 && aX < MAP_SIZE)
 										&& (aY > -1 && aY < (int) (DENSITY / ASPECT_RATIO))) {
 									if (shape.get(shapeX, shapeY) != null) {
-										map.put(x + shapeX, y + shapeY, shape.get(shapeX, shapeY));
+										map.put(x + shapeX, y + shapeY,
+												shape.get(shapeX, shapeY));
 									}
 								}
 							}
@@ -253,7 +267,8 @@ public class Game implements Runnable {
 	// Calculates the pixels which will appear on the screen
 	private synchronized void calculateVisiblePixels() {
 		// Reseting the array to eliminate overlay
-		visiblePixels = new PixelMap((int) DENSITY, (int) (DENSITY / ASPECT_RATIO));
+		visiblePixels = new PixelMap((int) DENSITY,
+				(int) (DENSITY / ASPECT_RATIO));
 
 		// Translating the map data into the visible data array using the map
 		// cursor
@@ -261,7 +276,8 @@ public class Game implements Runnable {
 
 		// Translating the statusbar onto the map
 		PixelMap statusPixels = statusBar.getPixels();
-		statusPixels.translate(visiblePixels, 0, 0, STATUS_BAR_MARGIN_LEFT, STATUS_BAR_MARGIN_UP);
+		statusPixels.translate(visiblePixels, 0, 0, STATUS_BAR_MARGIN_LEFT,
+				STATUS_BAR_MARGIN_UP);
 
 	}
 

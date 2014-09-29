@@ -10,6 +10,7 @@ import java.awt.image.BufferStrategy;
 
 import com.pixels.master.Game;
 import com.pixels.master.PixelMap;
+import com.pixels.util.Log;
 
 public class ContentFrame extends Canvas implements Runnable {
 	private static final long serialVersionUID = -8944654323818652165L;
@@ -42,6 +43,7 @@ public class ContentFrame extends Canvas implements Runnable {
 			createBufferStrategy(2);
 			buffer = getBufferStrategy();
 		}
+		Log.log("Starting main graphics thread...");
 		new Thread(this).start();
 	}
 
