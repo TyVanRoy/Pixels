@@ -8,13 +8,13 @@ import com.pixels.sprite.GravityBoundSprite;
 
 public class Player extends GravityBoundSprite {
 	public static final Color COLOR = Color.green;
-	public static final int MOVEMENT_DISTANCE = 1;
+	public static final int MOVEMENT_DISTANCE = 5;
 	public static final double VERTICAL_CAPACITY = .2;
 	// The higher the jump power, the faster the jump height is reached.
 	public static final int JUMP_POWER = 10;
 	// Jump height should be divisible by the jump power
 	public static final int JUMP_HEIGHT = 60;
-	public static final int WEIGHT = 1;
+	public static final int WEIGHT = 5;
 	private int jumpTimer = 0;
 
 	public Player(Game game) {
@@ -49,7 +49,7 @@ public class Player extends GravityBoundSprite {
 	@Override
 	public void behave() {
 		if(jumpTimer == 0){
-			super.behave();
+//			super.behave();
 		}else{
 			y -= JUMP_POWER;
 			jumpTimer--;

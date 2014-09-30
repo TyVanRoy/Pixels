@@ -298,16 +298,20 @@ public class Game implements Runnable {
 	 * player.
 	 */
 	public synchronized void center() {
-		int startPosition = sprites.get(0).getX() - mapCursor;
-		int endPosition = visiblePixels.width() / 2
-				- sprites.get(0).shape().width() / 2;
-		focusTimer = endPosition - startPosition;
+		Player player = getPlayer();
 
-		if (mapCursor - focusTimer < 0) {
-			focusTimer = mapCursor;
+		double startPosition = player.getX() + player.shape().width() / 4 - mapCursor;
+
+		double endPosition = visiblePixels.width() / 2 - player.shape().width()
+				/ 2;
+		double f = endPosition - startPosition;
+
+		if (mapCursor - f < 0) {
+			f = mapCursor;
 		}
 
-		focusTimer /= 1000 / SHIFT_SPEED;
+		f /= (1000 / SHIFT_SPEED);
+		focusTimer = (int) f;
 	}
 
 	/**

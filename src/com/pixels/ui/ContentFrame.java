@@ -70,7 +70,7 @@ public class ContentFrame extends Canvas implements Runnable {
 				int py = y * (height / pixels.height());
 
 				if (pixels.get(x, y) == null) {
-					
+
 					// Rendering the outline of the pixels
 					if (showingOutline) {
 						g.setColor(outlineColor);
@@ -79,11 +79,14 @@ public class ContentFrame extends Canvas implements Runnable {
 					}
 				} else {
 					g.setColor(pixels.get(x, y));
-					g.fillRect(px, py, width / pixels.width(), height
-							/ pixels.height());
+					g.fillRect(px, py, width / pixels.width(),
+							height / pixels.height());
 				}
 			}
 		}
+
+		g.drawLine((int) game.getDimensions().getWidth() / 2, 0, (int) game.getDimensions()
+				.getWidth() / 2, (int) game.getDimensions().getHeight());
 
 		g.dispose();
 		buffer.show();

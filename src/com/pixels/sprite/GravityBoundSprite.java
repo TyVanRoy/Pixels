@@ -16,7 +16,6 @@ public abstract class GravityBoundSprite extends BehavioralSprite {
 	 * Checks for bottom contact and also makes last minute adjustments to the
 	 * position of needed
 	 */
-	@Deprecated
 	protected boolean isGrounded() {
 		int dif = weight;
 
