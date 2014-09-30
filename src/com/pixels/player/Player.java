@@ -8,7 +8,7 @@ import com.pixels.sprite.GravityBoundSprite;
 
 public class Player extends GravityBoundSprite {
 	public static final Color COLOR = Color.green;
-	public static final int MOVEMENT_DISTANCE = 5;
+	public static final int MOVEMENT_DISTANCE = 1;
 	public static final double VERTICAL_CAPACITY = .2;
 	// The higher the jump power, the faster the jump height is reached.
 	public static final int JUMP_POWER = 10;
@@ -19,7 +19,7 @@ public class Player extends GravityBoundSprite {
 
 	public Player(Game game) {
 		super(game, (int) (Game.LEFT_FOCUS_FACTOR * Game.DENSITY + game
-				.getMapCursor()), 50, MOVEMENT_DISTANCE, VERTICAL_CAPACITY, PixelMap.getPlayerShape(), WEIGHT);
+				.getMapCursor()), 50, MOVEMENT_DISTANCE, VERTICAL_CAPACITY, PixelMap.generateBall(Color.blue, 21), WEIGHT);
 	}
 
 	public void dispatchInstructions(boolean[] instructions) {
@@ -49,7 +49,7 @@ public class Player extends GravityBoundSprite {
 	@Override
 	public void behave() {
 		if(jumpTimer == 0){
-//			super.behave();
+			super.behave();
 		}else{
 			y -= JUMP_POWER;
 			jumpTimer--;

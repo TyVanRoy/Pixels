@@ -49,10 +49,10 @@ public class InputListener implements KeyListener, MouseListener, MouseMotionLis
 				rightDown = true;
 				break;
 			case KeyEvent.VK_Q:
-				game.shiftLeft();
+				game.shiftLeft(game.getPlayer());
 				break;
 			case KeyEvent.VK_E:
-				game.center();
+				game.center(game.getPlayer());
 				break;
 			case KeyEvent.VK_R:
 				content.switchOutlineVisible();

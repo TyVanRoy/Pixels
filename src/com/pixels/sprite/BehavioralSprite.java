@@ -43,7 +43,7 @@ public abstract class BehavioralSprite extends Sprite {
 							}
 						}else{
 							if(map.get(this.x + x + 1, y) != null){
-								
+								contactWidth = 1;
 							}
 						}
 					}

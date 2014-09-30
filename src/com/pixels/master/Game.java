@@ -37,7 +37,7 @@ public class Game implements Runnable {
 	public static final int STATUS_BAR_MARGIN_UP = 2;
 	public static final int STATUS_BAR_MARGIN_LEFT = 5;
 	/**
-	 * The update speed of the main game thread in milliseconds
+	 * The update iterations of the main game thread per second
 	 */
 	public static final int UPDATE_RATE = 120;
 	public static final int SHIFT_SPEED = 50;
@@ -45,7 +45,6 @@ public class Game implements Runnable {
 	 * Speed to complete one full screen turnover in milliseconds
 	 */
 	public static final int SCROLL_SPEED = 2000;
-	public static final Color CURSOR_COLOR = Color.white;
 	public static final Color REGISTER_COLOR = Color.red;
 	private JFrame window;
 	private ContentFrame content;
@@ -297,12 +296,10 @@ public class Game implements Runnable {
 	 * Calculates the amount of iterations needed to center the map on the
 	 * player.
 	 */
-	public synchronized void center() {
-		Player player = getPlayer();
+	public synchronized void center(Sprite sprite) {
+		double startPosition = sprite.getX() + sprite.shape().width() / 4 - mapCursor;
 
-		double startPosition = player.getX() + player.shape().width() / 4 - mapCursor;
-
-		double endPosition = visiblePixels.width() / 2 - player.shape().width()
+		double endPosition = visiblePixels.width() / 2 - sprite.shape().width()
 				/ 2;
 		double f = endPosition - startPosition;
 
@@ -318,7 +315,7 @@ public class Game implements Runnable {
 	 * Calculates the amount of iterations needed to shift the map perspective
 	 * so that the player is aligned according to Game.LEFT_FOCUS_FACTOR.
 	 */
-	public synchronized void shiftLeft() {
+	public synchronized void shiftLeft(Sprite sprite) {
 		int startPosition = sprites.get(0).getX() - mapCursor;
 		int endPosition = (int) (visiblePixels.width() * LEFT_FOCUS_FACTOR)
 				- sprites.get(0).shape().height() / 2;
