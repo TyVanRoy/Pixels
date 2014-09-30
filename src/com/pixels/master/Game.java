@@ -20,6 +20,13 @@ import com.pixels.ui.StatusBar;
 import com.pixels.util.Log;
 import com.pixels.util.Map;
 
+/**
+ * This class is where the game takes place. Including the initial setup and
+ * menus. There is no need to have several Game objects as there are methods for
+ * resetting and refreshing the Game.
+ * 
+ * @author Ty Van Roy
+ */
 public class Game implements Runnable {
 	public static final String WINDOW_TITLE = "•Pixels•";
 	public static final double ASPECT_RATIO = 2;
@@ -29,10 +36,14 @@ public class Game implements Runnable {
 	public static final int MAP_SIZE = 1000;
 	public static final int STATUS_BAR_MARGIN_UP = 2;
 	public static final int STATUS_BAR_MARGIN_LEFT = 5;
-	// In milliseconds
+	/**
+	 * The update speed of the main game thread in milliseconds
+	 */
 	public static final int UPDATE_RATE = 120;
 	public static final int SHIFT_SPEED = 50;
-	// Speed to complete one full screen turnover in milliseconds
+	/**
+	 * Speed to complete one full screen turnover in milliseconds
+	 */
 	public static final int SCROLL_SPEED = 2000;
 	public static final Color CURSOR_COLOR = Color.white;
 	public static final Color REGISTER_COLOR = Color.red;
@@ -48,7 +59,6 @@ public class Game implements Runnable {
 	private int focusTimer = 0;
 	private StatusBar statusBar;
 
-	// Private to avoid instantiation outside of this class
 	public Game() {
 		width = (int) nativeDimension().getWidth();
 		height = (int) nativeDimension().getHeight();
@@ -142,7 +152,7 @@ public class Game implements Runnable {
 		}
 	}
 
-	// Is a sprite is found when the cursor is registered, it is registered here
+	// If a sprite is found when the cursor is registered, it is registered here
 	public void registerSprite(Sprite sprite, Point registerPoint) {
 		// Changes it's color and puts it in a sprite container
 		sprite.setColor(REGISTER_COLOR);
@@ -153,7 +163,9 @@ public class Game implements Runnable {
 		registeredSpriteContainer = new SpriteContainer(sprite, xDif, yDif);
 	}
 
-	// Unregisters the registered sprite if there is one
+	/**
+	 * Unregisters the registered sprite if there is one
+	 */
 	public void unregisterSprite() {
 		if (registeredSpriteContainer != null) {
 
@@ -281,8 +293,10 @@ public class Game implements Runnable {
 
 	}
 
-	// Calculates the amount of iterations needed to center the map on the
-	// player.
+	/**
+	 * Calculates the amount of iterations needed to center the map on the
+	 * player.
+	 */
 	public synchronized void center() {
 		int startPosition = sprites.get(0).getX() - mapCursor;
 		int endPosition = visiblePixels.width() / 2
@@ -296,6 +310,10 @@ public class Game implements Runnable {
 		focusTimer /= 1000 / SHIFT_SPEED;
 	}
 
+	/**
+	 * Calculates the amount of iterations needed to shift the map perspective
+	 * so that the player is aligned according to Game.LEFT_FOCUS_FACTOR.
+	 */
 	public synchronized void shiftLeft() {
 		int startPosition = sprites.get(0).getX() - mapCursor;
 		int endPosition = (int) (visiblePixels.width() * LEFT_FOCUS_FACTOR)
@@ -326,7 +344,9 @@ public class Game implements Runnable {
 		return new Dimension(width, height);
 	}
 
-	// Returns the default dimensions. (Screen-dependent)
+	/**
+	 * Returns the default dimensions. (Screen-dependent)
+	 */
 	public static Dimension nativeDimension() {
 		Dimension maximumNative = Toolkit.getDefaultToolkit().getScreenSize();
 		double maxWidth = maximumNative.getWidth() - SCREEN_MARGIN;
@@ -349,7 +369,9 @@ public class Game implements Runnable {
 		return new Dimension(finalWidth, finalHeight);
 	}
 
-	// For map scrolling
+	/**
+	 * For map scrolling
+	 */
 	public void calculateScrolling(Player player, boolean[] instructions) {
 
 		// Shifting the focus of the map to the desired position
@@ -363,16 +385,20 @@ public class Game implements Runnable {
 			}
 		}
 
-		if (instructions[4]) {
-			if (instructions[2]) {
+		if (instructions[3]) {
+			if (instructions[1]) {
 				if (mapCursor > 0)
 					mapCursor -= Player.MOVEMENT_DISTANCE;
 			}
-			if (instructions[3]) {
+			if (instructions[2]) {
 				if (mapCursor < map.width())
 					mapCursor += Player.MOVEMENT_DISTANCE;
 			}
 		}
+	}
+
+	public Player getPlayer() {
+		return (Player) sprites.get(0);
 	}
 
 	public Sprite getRegisteredSprite() {
@@ -401,10 +427,10 @@ public class Game implements Runnable {
 
 			// Getting the input status
 			boolean[] status = input.getStatus();
-			statusBar.setLocked(status[4]);
+			statusBar.setLocked(status[3]);
 			// Sending the input to the player. Sprites at 0 will always be the
 			// player.
-			Player player = (Player) sprites.get(0);
+			Player player = getPlayer();
 			player.dispatchInstructions(status);
 
 			calculateScrolling(player, status);

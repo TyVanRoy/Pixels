@@ -12,7 +12,6 @@ import com.pixels.master.Game;
 public class InputListener implements KeyListener, MouseListener, MouseMotionListener {
 	private Game game;
 	private ContentFrame content;
-	private boolean upDown = false;
 	private boolean downDown = false;
 	private boolean leftDown = false;
 	private boolean rightDown = false;
@@ -25,7 +24,7 @@ public class InputListener implements KeyListener, MouseListener, MouseMotionLis
 
 	// Returns the status of the input
 	public boolean[] getStatus() {
-		return new boolean[] { upDown, downDown, leftDown, rightDown, locked };
+		return new boolean[] { downDown, leftDown, rightDown, locked };
 	}
 
 	@Override
@@ -38,7 +37,7 @@ public class InputListener implements KeyListener, MouseListener, MouseMotionLis
 			int key = e.getKeyCode();
 			switch (key) {
 			case KeyEvent.VK_W:
-				upDown = true;
+				game.getPlayer().jump();
 				break;
 			case KeyEvent.VK_S:
 				downDown = true;
@@ -70,9 +69,6 @@ public class InputListener implements KeyListener, MouseListener, MouseMotionLis
 		if (e.getSource() == content) {
 			int key = e.getKeyCode();
 			switch (key) {
-			case KeyEvent.VK_W:
-				upDown = false;
-				break;
 			case KeyEvent.VK_S:
 				downDown = false;
 				break;
