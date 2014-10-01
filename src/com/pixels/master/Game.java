@@ -59,8 +59,8 @@ public class Game implements Runnable {
 	private StatusBar statusBar;
 
 	public Game() {
-		width = (int) nativeDimension().getWidth();
-		height = (int) nativeDimension().getHeight();
+		width = nativeDimension().width;
+		height = nativeDimension().height;
 
 		window = new JFrame(WINDOW_TITLE);
 		content = new ContentFrame(this);
@@ -423,7 +423,7 @@ public class Game implements Runnable {
 			// Making sure the content is able to take input
 			if (!content.hasFocus())
 				content.requestFocus();
-
+			
 			induceSpriteBehavior();
 
 			// Getting the input status
@@ -433,7 +433,7 @@ public class Game implements Runnable {
 			// player.
 			Player player = getPlayer();
 			player.dispatchInstructions(status);
-
+			
 			calculateScrolling(player, status);
 
 			// Calculating the positions and graphics

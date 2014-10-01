@@ -117,8 +117,8 @@ public class InputListener implements KeyListener, MouseListener, MouseMotionLis
 
 	// Scales the point in order to find the map coordinate
 	public static Point getScaledPoint(Game game, MouseEvent e){
-		int aWidth = (int) game.getDimensions().getWidth();
-		int aHeight = (int) game.getDimensions().getHeight();
+		int aWidth = game.getDimensions().width;
+		int aHeight = game.getDimensions().height;
 		int pWidth = game.getVisiblePixels().width();
 		int pHeight = game.getVisiblePixels().height();
 		int x = (e.getX() / (aWidth / pWidth)) + game.getMapCursor();

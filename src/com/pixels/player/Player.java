@@ -1,6 +1,7 @@
 package com.pixels.player;
 
 import java.awt.Color;
+import java.awt.Dimension;
 
 import com.pixels.master.Game;
 import com.pixels.master.PixelMap;
@@ -8,49 +9,53 @@ import com.pixels.sprite.GravityBoundSprite;
 
 public class Player extends GravityBoundSprite {
 	public static final Color COLOR = Color.green;
-	public static final int MOVEMENT_DISTANCE = 1;
+	public static final int MOVEMENT_DISTANCE = 5;
 	public static final double VERTICAL_CAPACITY = .2;
 	// The higher the jump power, the faster the jump height is reached.
-	public static final int JUMP_POWER = 10;
+	public static final int JUMP_POWER = 2;
 	// Jump height should be divisible by the jump power
-	public static final int JUMP_HEIGHT = 60;
+	public static final int JUMP_HEIGHT = 80;
 	public static final int WEIGHT = 5;
 	private int jumpTimer = 0;
 
 	public Player(Game game) {
 		super(game, (int) (Game.LEFT_FOCUS_FACTOR * Game.DENSITY + game
-				.getMapCursor()), 50, MOVEMENT_DISTANCE, VERTICAL_CAPACITY, PixelMap.generateBall(Color.blue, 21), WEIGHT);
+				.getMapCursor()), 50, MOVEMENT_DISTANCE, VERTICAL_CAPACITY,
+				PixelMap.getPlayerShape(), WEIGHT);
 	}
 
 	public void dispatchInstructions(boolean[] instructions) {
 		int width = shape.width();
-		int height = shape.height();
-		
-		if (instructions[0]) {
-			if (y < game.getMap().height() - height)
-				y += movementDistance;
-		}
+		// int height = shape.height();
+
 		if (instructions[1]) {
 			if (x > 0)
-				x -= MOVEMENT_DISTANCE;
+				x -= movementDistance;
 		}
 		if (instructions[2]) {
-			if (x < game.getMap().width() - width)
-				x += MOVEMENT_DISTANCE;
+			if (x < game.getMap().width() - width){
+				Dimension contact = getRightContactMagnitude();
+				System.out.println(contact.width);
+				if (contact.width == 0) {
+					x += movementDistance;
+				}else if (contact.width != 1){
+					x += contact.width - 1;
+				}
+			}
 		}
 	}
-	 
-	public void jump(){
-		if(isGrounded()){
+
+	public synchronized void jump() {
+		if (isGrounded()) {
 			jumpTimer = JUMP_HEIGHT / JUMP_POWER;
 		}
 	}
 
 	@Override
 	public void behave() {
-		if(jumpTimer == 0){
+		if (jumpTimer == 0) {
 			super.behave();
-		}else{
+		} else {
 			y -= JUMP_POWER;
 			jumpTimer--;
 		}

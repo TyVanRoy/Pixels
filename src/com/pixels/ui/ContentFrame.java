@@ -33,8 +33,8 @@ public class ContentFrame extends Canvas implements Runnable {
 		setMinimumSize(size);
 		setMaximumSize(size);
 
-		width = (int) size.getWidth();
-		height = (int) size.getHeight();
+		width = size.width;
+		height = size.height;
 	}
 
 	public void initGraphics() {
@@ -85,9 +85,6 @@ public class ContentFrame extends Canvas implements Runnable {
 			}
 		}
 
-		g.drawLine((int) game.getDimensions().getWidth() / 2, 0, (int) game.getDimensions()
-				.getWidth() / 2, (int) game.getDimensions().getHeight());
-
 		g.dispose();
 		buffer.show();
 		Toolkit.getDefaultToolkit().sync();
@@ -100,8 +97,8 @@ public class ContentFrame extends Canvas implements Runnable {
 		setMinimumSize(size);
 		setMaximumSize(size);
 
-		width = (int) size.getWidth();
-		height = (int) size.getHeight();
+		width = size.width;
+		height = size.height;
 	}
 
 	public boolean isRendering() {

@@ -103,7 +103,7 @@ public class PixelMap {
 
 	// Returns the default player shape.
 	public static PixelMap getPlayerShape() {
-		return DataExtract.getImagePixels("player.png", DataExtract.PLAYER);
+		return DataExtract.getImagePixels("bob_ross.png", DataExtract.PLAYER);
 	}
 
 }

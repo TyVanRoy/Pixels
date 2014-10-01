@@ -12,6 +12,12 @@ public abstract class Log {
 		out.println(date + ": " + input);
 		log += date + ": " + input;
 	}
+	
+	public static void log(int input){
+		Date date = new Date();
+		out.println(date + ": " + input);
+		log += date + ": " + input;
+	}
 
 	public static String getLog(){
 		return log;

@@ -18,7 +18,9 @@ public abstract class DataExtract {
 	public static final String PLAYER = "player";
 	public static final String MAPS = "maps";
 
-	// I need to find a better way to do this...
+	/**
+	 * I need to find a better way to do this...
+	 */
 	public static PixelMap getImagePixels(String imageName,
 			final String DIRECTORY) {
 		PixelMap pixels = null;
@@ -56,6 +58,7 @@ public abstract class DataExtract {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		return pixels;
 	}
 }
