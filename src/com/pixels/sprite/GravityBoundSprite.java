@@ -1,7 +1,7 @@
 package com.pixels.sprite;
 
 import com.pixels.master.Game;
-import com.pixels.master.PixelMap;
+import com.pixels.pixelgroup.PixelMap;
 
 public abstract class GravityBoundSprite extends BehavioralSprite {
 	protected int weight;
@@ -12,6 +12,7 @@ public abstract class GravityBoundSprite extends BehavioralSprite {
 		this.weight = weight;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void behave() {
 		if (!this.equals(game.getRegisteredSprite()))

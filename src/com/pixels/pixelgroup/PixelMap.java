@@ -1,9 +1,7 @@
-package com.pixels.master;
+package com.pixels.pixelgroup;
 
 import java.awt.Color;
 import java.awt.Point;
-
-import com.pixels.util.DataExtract;
 
 public class PixelMap {
 	private Color[][] pixels;
@@ -37,6 +35,18 @@ public class PixelMap {
 				output.put(x + outXMargin, y + outYMargin, pixels[y + inYMargin][x + inXMargin]);
 			}
 		}
+	}
+	
+	public synchronized PixelMap getHorizontalFlip(){
+		PixelMap output = new PixelMap(width, height);
+		
+		for(int y = 0; y < height; y++){
+			for(int x = 0; x < width; x++){
+				
+			}
+		}
+		
+		return output;
 	}
 
 	public void fill(Color color) {
@@ -99,11 +109,6 @@ public class PixelMap {
 		}
 
 		return shape;
-	}
-
-	// Returns the default player shape.
-	public static PixelMap getPlayerShape() {
-		return DataExtract.getImagePixels("bob_ross.png", DataExtract.PLAYER);
 	}
 
 }

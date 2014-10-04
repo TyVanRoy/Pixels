@@ -3,8 +3,7 @@ package com.pixels.sprite;
 import java.awt.Dimension;
 
 import com.pixels.master.Game;
-import com.pixels.master.PixelMap;
-import com.pixels.util.Log;
+import com.pixels.pixelgroup.PixelMap;
 
 public abstract class BehavioralSprite extends Sprite {
 	protected int movementDistance, weight;
@@ -60,16 +59,17 @@ public abstract class BehavioralSprite extends Sprite {
 			}
 		}
 
-		if(!isGrounded()){
+		if (!isGrounded()) {
 			contactWidth--;
 		}
 		return new Dimension(contactWidth, contactHeight);
 	}
-	
+
 	/**
 	 * Checks for bottom contact and also makes last minute adjustments to the
 	 * position of needed
 	 */
+	@Deprecated
 	protected synchronized boolean isGrounded() {
 		int dif = weight;
 

@@ -9,7 +9,7 @@ import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 
 import com.pixels.master.Game;
-import com.pixels.master.PixelMap;
+import com.pixels.pixelgroup.PixelMap;
 import com.pixels.util.Log;
 
 public class ContentFrame extends Canvas implements Runnable {

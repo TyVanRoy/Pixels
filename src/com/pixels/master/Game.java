@@ -6,10 +6,12 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.HierarchyBoundsListener;
 import java.awt.event.HierarchyEvent;
+
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
+import com.pixels.pixelgroup.PixelMap;
 import com.pixels.player.Player;
 import com.pixels.sprite.BehavioralSprite;
 import com.pixels.sprite.Sprite;
@@ -33,7 +35,7 @@ public class Game implements Runnable {
 	public static final double DENSITY = ASPECT_RATIO * 300;
 	public static final double LEFT_FOCUS_FACTOR = .2;
 	public static final int SCREEN_MARGIN = 50;
-	public static final int MAP_SIZE = 1000;
+	public static final int MAP_SIZE = 3000;
 	public static final int STATUS_BAR_MARGIN_UP = 2;
 	public static final int STATUS_BAR_MARGIN_LEFT = 5;
 	/**
@@ -252,6 +254,8 @@ public class Game implements Runnable {
 
 						// Drawing out the sprite's shape
 						PixelMap shape = sprite.shape();
+						if (shape == null)
+							continue;
 						for (int shapeY = 0; shapeY < shape.height(); shapeY++) {
 							for (int shapeX = 0; shapeX < shape.width(); shapeX++) {
 								// Adjusted coordinates
@@ -297,7 +301,8 @@ public class Game implements Runnable {
 	 * player.
 	 */
 	public synchronized void center(Sprite sprite) {
-		double startPosition = sprite.getX() + sprite.shape().width() / 4 - mapCursor;
+		double startPosition = sprite.getX() + sprite.shape().width() / 4
+				- mapCursor;
 
 		double endPosition = visiblePixels.width() / 2 - sprite.shape().width()
 				/ 2;
@@ -373,7 +378,14 @@ public class Game implements Runnable {
 	/**
 	 * For map scrolling
 	 */
-	public void calculateScrolling(Player player, boolean[] instructions) {
+	public void calculateScrolling(Player player, boolean leftDown,
+			boolean rightDown, boolean locked) {
+
+		if (player.getX() > visiblePixels.width() + mapCursor) {
+			shiftLeft(player);
+		} else if (player.getX() + player.shape().width() < mapCursor) {
+			center(player);
+		}
 
 		// Shifting the focus of the map to the desired position
 		if (focusTimer != 0) {
@@ -386,12 +398,12 @@ public class Game implements Runnable {
 			}
 		}
 
-		if (instructions[3]) {
-			if (instructions[1]) {
+		if (locked) {
+			if (leftDown) {
 				if (mapCursor > 0)
 					mapCursor -= Player.MOVEMENT_DISTANCE;
 			}
-			if (instructions[2]) {
+			if (rightDown) {
 				if (mapCursor < map.width())
 					mapCursor += Player.MOVEMENT_DISTANCE;
 			}
@@ -423,18 +435,18 @@ public class Game implements Runnable {
 			// Making sure the content is able to take input
 			if (!content.hasFocus())
 				content.requestFocus();
-			
+
 			induceSpriteBehavior();
 
 			// Getting the input status
 			boolean[] status = input.getStatus();
-			statusBar.setLocked(status[3]);
+			statusBar.setLocked(status[2]);
 			// Sending the input to the player. Sprites at 0 will always be the
 			// player.
 			Player player = getPlayer();
-			player.dispatchInstructions(status);
-			
-			calculateScrolling(player, status);
+			player.dispatchInstructions(status[0], status[1]);
+
+			calculateScrolling(player, status[0], status[1], status[2]);
 
 			// Calculating the positions and graphics
 			calculateMap();

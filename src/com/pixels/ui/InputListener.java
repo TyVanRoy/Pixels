@@ -9,7 +9,8 @@ import java.awt.event.MouseMotionListener;
 
 import com.pixels.master.Game;
 
-public class InputListener implements KeyListener, MouseListener, MouseMotionListener {
+public class InputListener implements KeyListener, MouseListener,
+		MouseMotionListener {
 	private Game game;
 	private ContentFrame content;
 	private boolean downDown = false;
@@ -24,7 +25,7 @@ public class InputListener implements KeyListener, MouseListener, MouseMotionLis
 
 	// Returns the status of the input
 	public boolean[] getStatus() {
-		return new boolean[] { downDown, leftDown, rightDown, locked };
+		return new boolean[] { leftDown, rightDown, locked, downDown };
 	}
 
 	@Override
@@ -116,14 +117,14 @@ public class InputListener implements KeyListener, MouseListener, MouseMotionLis
 	}
 
 	// Scales the point in order to find the map coordinate
-	public static Point getScaledPoint(Game game, MouseEvent e){
+	public static Point getScaledPoint(Game game, MouseEvent e) {
 		int aWidth = game.getDimensions().width;
 		int aHeight = game.getDimensions().height;
 		int pWidth = game.getVisiblePixels().width();
 		int pHeight = game.getVisiblePixels().height();
 		int x = (e.getX() / (aWidth / pWidth)) + game.getMapCursor();
 		int y = e.getY() / (aHeight / pHeight);
-		
+
 		return new Point(x, y);
 	}
 }
