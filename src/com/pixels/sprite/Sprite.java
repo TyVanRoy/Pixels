@@ -47,7 +47,17 @@ public abstract class Sprite {
 	}
 
 	public synchronized void setShape(PixelMap newShape) {
+		int oldWidth = shape.width();
+		int oldHeight = shape.height();
+		int width = newShape.width();
+		int height = newShape.height();
 		shape = newShape;
+		
+		int xDif = (width - oldWidth) / 2;
+		int yDif = (height - oldHeight) / 2;
+		
+		x -= xDif;
+		y -= yDif;
 	}
 
 	protected void swapAnimation(Animation animation) {
