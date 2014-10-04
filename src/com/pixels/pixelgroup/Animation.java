@@ -2,7 +2,7 @@ package com.pixels.pixelgroup;
 
 public class Animation implements Runnable {
 	private PixelMap[] frames;
-	private int current = 0;
+	private int current;
 	private int frameRate;
 	private boolean running = false;
 
@@ -21,6 +21,7 @@ public class Animation implements Runnable {
 	}
 
 	public synchronized void start() {
+		current = -1;
 		running = true;
 		new Thread(this).start();
 	}

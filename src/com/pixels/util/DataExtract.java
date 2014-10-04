@@ -55,13 +55,9 @@ public abstract class DataExtract {
 					int value = image.getRGB(x, y);
 
 					if (value != 0){
-						System.out.print(" • ");
 						pixels.put(x, y, new Color(value));
-					}else{
-						System.out.print("   ");
 					}
 				}
-				System.out.println();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

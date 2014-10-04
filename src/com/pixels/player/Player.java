@@ -20,13 +20,15 @@ public class Player extends GravityBoundSprite {
 	public static final int WEIGHT = 5;
 	public static final PixelMap STILL_MAP = Player.getPlayerShape();
 	private int jumpTimer = 0;
-	private Animation movement;
+	private Animation movementRight;
+	private Animation movementLeft;
 
 	public Player(Game game) {
 		super(game, (int) (Game.LEFT_FOCUS_FACTOR * Game.DENSITY + game
 				.getMapCursor()), 50, MOVEMENT_DISTANCE, VERTICAL_CAPACITY,
 				STILL_MAP, WEIGHT);
-		movement = Player.getPlayerMovementAnimation();
+		movementRight = Player.getPlayerMovementAnimation(false);
+		movementLeft = Player.getPlayerMovementAnimation(true);
 	}
 
 	public void dispatchInstructions(boolean leftDown, boolean rightDown) {
@@ -34,12 +36,14 @@ public class Player extends GravityBoundSprite {
 		// int height = shape.height();
 
 		if (leftDown) {
+			if (animation != movementLeft) {
+				swapAnimation(movementLeft);
+			}
 			if (x > 0)
 				x -= movementDistance;
-		}
-		if (rightDown) {
-			if (animation != movement) {
-				swapAnimation(movement);
+		} else if (rightDown) {
+			if (animation != movementRight) {
+				swapAnimation(movementRight);
 			}
 			if (x < game.getMap().width() - width) {
 				x += movementDistance;
@@ -83,7 +87,7 @@ public class Player extends GravityBoundSprite {
 		return DataExtract.getImagePixels("still.png", DataExtract.PLAYER);
 	}
 
-	public static Animation getPlayerMovementAnimation() {
+	public static Animation getPlayerMovementAnimation(boolean orientLeft) {
 		int frameCount = 3;
 		PixelMap[] frames = new PixelMap[frameCount];
 		for (int i = 0; i < frameCount; i++) {
@@ -91,7 +95,13 @@ public class Player extends GravityBoundSprite {
 					DataExtract.PLAYER);
 		}
 
-		return new Animation(frames, 1);
+		if (orientLeft) {
+			for (int i = 0; i < frameCount; i++) {
+				frames[i] = frames[i].getHorizontalFlip();
+			}
+		}
+
+		return new Animation(frames, 5);
 	}
 
 }

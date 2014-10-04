@@ -42,7 +42,10 @@ public class PixelMap {
 		
 		for(int y = 0; y < height; y++){
 			for(int x = 0; x < width; x++){
-				
+				Color pixel = get(x, y);
+				if(pixel != null){
+					output.put(width - x - 1, y, pixel);
+				}
 			}
 		}
 		

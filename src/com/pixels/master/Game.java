@@ -6,11 +6,11 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.HierarchyBoundsListener;
 import java.awt.event.HierarchyEvent;
-
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
+import com.pixels.pixelgroup.Animation;
 import com.pixels.pixelgroup.PixelMap;
 import com.pixels.player.Player;
 import com.pixels.sprite.BehavioralSprite;
@@ -293,7 +293,6 @@ public class Game implements Runnable {
 		PixelMap statusPixels = statusBar.getPixels();
 		statusPixels.translate(visiblePixels, 0, 0, STATUS_BAR_MARGIN_LEFT,
 				STATUS_BAR_MARGIN_UP);
-
 	}
 
 	/**
