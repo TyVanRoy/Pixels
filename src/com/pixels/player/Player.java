@@ -94,16 +94,18 @@ public class Player extends GravityBoundSprite {
 	public static Animation getPlayerMovementAnimation(boolean orientLeft) {
 		int frameCount = 4;
 		PixelMap[] frames = new PixelMap[frameCount];
-		for (int i = 0; i < frameCount; i++) {
+		for (int i = 0; i < frameCount - 1; i++) {
 			frames[i] = DataExtract.getImagePixels("move" + i + ".png",
 					DataExtract.PLAYER);
 		}
 
 		if (orientLeft) {
-			for (int i = 0; i < frameCount; i++) {
+			for (int i = 0; i < frameCount - 1; i++) {
 				frames[i] = frames[i].getHorizontalFlip();
 			}
 		}
+		
+		frames[3] = frames[1];
 
 		return new Animation(frames, MOVEMENT_DISTANCE * 3);
 	}

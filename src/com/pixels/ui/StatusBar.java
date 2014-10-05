@@ -9,8 +9,8 @@ public class StatusBar {
 	public static final int ITEMS = 2;
 	public static final int ITEM_SIZE = 15;
 	public static final int BORDER_SIZE = 2;
-	public static final int WIDTH = ITEMS * ITEM_SIZE + BORDER_SIZE * 2;
-	public static final int HEIGHT = ITEMS + BORDER_SIZE * 2;
+	public static final int WIDTH = ITEMS * ITEM_SIZE + BORDER_SIZE * (ITEMS + 1);
+	public static final int HEIGHT = ITEM_SIZE + BORDER_SIZE * 2;
 	public static final Color BORDER_COLOR = Color.gray;
 	private PixelMap lockedMap, unlockedMap;
 	private boolean locked;
@@ -33,7 +33,7 @@ public class StatusBar {
 		status[1] = getAltitudeMap();
 
 		for (int i = 0; i < status.length; i++) {
-			status[i].translate(pixels, 0, 0, BORDER_SIZE, BORDER_SIZE);
+			status[i].translate(pixels, 0, 0, (BORDER_SIZE * (i + 1)) + (ITEM_SIZE * i), BORDER_SIZE);
 		}
 
 		return pixels;
