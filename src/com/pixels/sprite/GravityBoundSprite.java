@@ -12,11 +12,16 @@ public abstract class GravityBoundSprite extends BehavioralSprite {
 		this.weight = weight;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void behave() {
-		if (!this.equals(game.getRegisteredSprite()))
-			if (!isGrounded())
-				y += weight;
+		int distance = distanceFromGround(weight);
+		
+		if (distance >= weight || distance == -1) {
+			y += weight;
+		} else if (distance == 0) {
+			return;
+		} else if (distance < weight) {
+			y += distance - 1;
+		}
 	}
 }

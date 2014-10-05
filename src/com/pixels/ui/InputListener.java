@@ -24,7 +24,7 @@ public class InputListener implements KeyListener, MouseListener,
 	}
 
 	// Returns the status of the input
-	public boolean[] getStatus() {
+	public synchronized boolean[] getStatus() {
 		return new boolean[] { leftDown, rightDown, locked, downDown };
 	}
 
@@ -108,8 +108,6 @@ public class InputListener implements KeyListener, MouseListener,
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		Point point = getScaledPoint(game, e);
-		game.registerDrag(point);
 	}
 
 	@Override

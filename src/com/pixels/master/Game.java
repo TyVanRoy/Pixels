@@ -10,12 +10,10 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
-import com.pixels.pixelgroup.Animation;
 import com.pixels.pixelgroup.PixelMap;
 import com.pixels.player.Player;
 import com.pixels.sprite.BehavioralSprite;
 import com.pixels.sprite.Sprite;
-import com.pixels.sprite.SpriteContainer;
 import com.pixels.ui.ContentFrame;
 import com.pixels.ui.InputListener;
 import com.pixels.ui.StatusBar;
@@ -55,7 +53,6 @@ public class Game implements Runnable {
 	private PixelMap baseMap, map, visiblePixels;
 	private ArrayList<Sprite> sprites = new ArrayList<Sprite>();
 	private InputListener input;
-	private SpriteContainer registeredSpriteContainer;
 	private int mapCursor = 0;
 	private int focusTimer = 0;
 	private StatusBar statusBar;
@@ -121,70 +118,9 @@ public class Game implements Runnable {
 		// Registers the pointed clicked by the user
 		if (point != null) {
 			// Going through the entire map
-			for (int y = 0; y < map.height(); y++) {
-				for (int x = 0; x < map.width(); x++) {
-
-					// Checking sprites to see if any starting points lie on the
-					// current coordinate
-					for (Sprite sprite : sprites) {
-						if (sprite.getX() == x && sprite.getY() == y) {
-
-							// Now checking the sprite's shape for matches
-							PixelMap shape = sprite.shape();
-							for (int shapeY = 0; shapeY < sprite.shape()
-									.height(); shapeY++) {
-								for (int shapeX = 0; shapeX < sprite.shape()
-										.width(); shapeX++) {
-									if (shape.get(shapeX, shapeY) != null) {
-										if (x + shapeX == point.x
-												&& y + shapeY == point.y) {
-											registerSprite(sprite, point);
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+			
 		} else {
 			// Null point is registered when the mouse is released
-			unregisterSprite();
-		}
-	}
-
-	// If a sprite is found when the cursor is registered, it is registered here
-	public void registerSprite(Sprite sprite, Point registerPoint) {
-		// Changes it's color and puts it in a sprite container
-		sprite.setColor(REGISTER_COLOR);
-
-		// The differences between the sprite's coordinates and the cursor's
-		int xDif = registerPoint.x - sprite.getX();
-		int yDif = registerPoint.y - sprite.getY();
-		registeredSpriteContainer = new SpriteContainer(sprite, xDif, yDif);
-	}
-
-	/**
-	 * Unregisters the registered sprite if there is one
-	 */
-	public void unregisterSprite() {
-		if (registeredSpriteContainer != null) {
-
-			// Reverts the sprite back to it's original shape and color
-			registeredSpriteContainer.getSprite().revert();
-			registeredSpriteContainer = null;
-		}
-	}
-
-	// When the mouse is dragged
-	public synchronized void registerDrag(Point point) {
-		// If there is a sprite currently registered, it moves it to the new
-		// location using the xDif & yDif
-		if (registeredSpriteContainer != null) {
-			int x = point.x - registeredSpriteContainer.getXDif();
-			int y = point.y - registeredSpriteContainer.getYDif();
-
-			registeredSpriteContainer.getSprite().setLocation(new Point(x, y));
 		}
 	}
 
@@ -411,11 +347,6 @@ public class Game implements Runnable {
 
 	public Player getPlayer() {
 		return (Player) sprites.get(0);
-	}
-
-	public Sprite getRegisteredSprite() {
-		return registeredSpriteContainer == null ? null
-				: registeredSpriteContainer.getSprite();
 	}
 
 	public void induceSpriteBehavior() {

@@ -7,17 +7,17 @@ import com.pixels.sprite.GravityBoundSprite;
 import com.pixels.util.DataExtract;
 
 public class Player extends GravityBoundSprite {
-	public static final int MOVEMENT_DISTANCE = 1;
+	public static final int MOVEMENT_DISTANCE = 2;
 	public static final double VERTICAL_CAPACITY = .2;
 	/**
 	 * The higher the jump power, the faster the jump height is reached.
 	 */
-	public static final int JUMP_POWER = 20;
+	public static final int JUMP_POWER = 5;
 	/**
 	 * Jump height should be divisible by the jump power
 	 */
-	public static final int JUMP_HEIGHT = 60;
-	public static final int WEIGHT = 5;
+	public static final int JUMP_HEIGHT = 50;
+	public static final int WEIGHT = 4;
 	public static final PixelMap STILL_RIGHT = Player.getPlayerShape();
 	public static final PixelMap STILL_LEFT = STILL_RIGHT.getHorizontalFlip();
 	private int jumpTimer = 0;
@@ -62,9 +62,8 @@ public class Player extends GravityBoundSprite {
 
 	}
 
-	@SuppressWarnings("deprecation")
 	public void jump() {
-		if (isGrounded()) {
+		if (distanceFromGround() == 1) {
 			jumpTimer = JUMP_HEIGHT / JUMP_POWER;
 		}
 	}
@@ -106,7 +105,7 @@ public class Player extends GravityBoundSprite {
 			}
 		}
 
-		return new Animation(frames, 5);
+		return new Animation(frames, MOVEMENT_DISTANCE * 3);
 	}
 
 }
